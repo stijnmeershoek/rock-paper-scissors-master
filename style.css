@@ -1,0 +1,256 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Barlow Semi Condensed", sans-serif;
+}
+
+:root {
+  /* ### Primary */
+
+  --scissors-gradient: hsl(39, 89%, 49%), hsl(40, 84%, 53%);
+  --paper-gradient: hsl(230, 89%, 62%), hsl(230, 89%, 65%);
+  --rock-gradient: hsl(349, 71%, 52%), hsl(349, 70%, 56%);
+  --lizard-gradient: hsl(261, 73%, 60%), hsl(261, 72%, 63%);
+  --cyan: hsl(189, 59%, 53%), hsl(189, 58%, 57%);
+
+  /* ### Neutral */
+
+  --dark-text: hsl(229, 25%, 31%);
+  --score-text: hsl(229, 64%, 46%);
+  --header-outline: hsl(217, 16%, 45%);
+
+  /* ### Background */
+
+  --radial-gradient: hsl(214, 47%, 23%), hsl(238, 48%, 15%);
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(at top, var(--radial-gradient));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  overflow-x: hidden;
+}
+
+body > header {
+  width: 50%;
+  margin-top: 6vh;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border: 3px solid var(--header-outline);
+  border-radius: 20px;
+}
+
+h1 {
+  font-size: 65px;
+}
+
+h2 {
+  text-transform: uppercase;
+  font-size: 45px;
+  line-height: 0.8;
+}
+
+h3 {
+  text-transform: uppercase;
+  font-size: 32px;
+}
+
+span {
+  text-transform: uppercase;
+}
+
+button {
+  display: block;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.score {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 50px;
+  border-radius: 10px;
+}
+
+.score span {
+  color: var(--score-text);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+}
+
+.score h1 {
+  color: var(--dark-text);
+}
+
+.rules {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  padding: 10px 40px;
+  border-radius: 10px;
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  color: white;
+  background-color: transparent;
+  border: 3px solid var(--header-outline);
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+}
+
+main {
+  width: 650px;
+  height: 650px;
+  min-height: 650px;
+  aspect-ratio: 1;
+  position: relative;
+  --padding: 15%;
+}
+
+.rock,
+.paper,
+.scissors {
+  width: 25%;
+  aspect-ratio: 1;
+  position: absolute;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.rock:hover,
+.paper:hover,
+.scissors:hover {
+  filter: brightness(0.85);
+}
+
+.paper {
+  --background: var(--paper-gradient);
+  --image: url(./images/icon-paper.svg);
+  --shadow: #2945c2;
+  top: var(--padding);
+  left: var(--padding);
+}
+
+.scissors {
+  --background: var(--scissors-gradient);
+  --image: url(./images/icon-scissors.svg);
+  --shadow: #c76c1b;
+  top: var(--padding);
+  right: var(--padding);
+}
+
+.rock {
+  --background: var(--rock-gradient);
+  --image: url(./images/icon-rock.svg);
+  --shadow: #9e1635;
+  bottom: calc(var(--padding) + 5%);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.rock > div,
+.paper > div,
+.scissors > div {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 100%;
+  -webkit-box-shadow: inset 0px 8px #bbc0d3;
+  box-shadow: inset 0px 8px #bbc0d3;
+  background-color: #e6e6e6;
+  background-image: var(--image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rock > div::before,
+.paper > div::before,
+.scissors > div::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 35%);
+  height: calc(100% + 35%);
+  background: radial-gradient(var(--background));
+  -webkit-box-shadow: 0 10px var(--shadow);
+  box-shadow: 0 5px var(--shadow), inset 0 -5px var(--shadow);
+  z-index: -1;
+  border-radius: 100%;
+}
+
+.line-container {
+  position: absolute;
+  inset: 0 0 0 0;
+}
+
+.line {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -10;
+  top: 0;
+  left: 0;
+}
+
+.line > line {
+  stroke-width: 20px;
+  stroke: rgb(0, 0, 0, 0.2);
+}
+
+.modal {
+  position: absolute;
+  inset: 0 0 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.rules-modal {
+  background-color: white;
+  color: var(--dark-text);
+  border-radius: 10px;
+  width: fit-content;
+  height: fit-content;
+  padding: 35px 45px;
+  user-select: none;
+}
+
+.rules-modal > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.rules-modal .close-btn {
+  cursor: pointer;
+}
+
+.rules-modal .close-btn:hover path {
+  opacity: 1;
+}
+
+.hide {
+  display: none;
+}
