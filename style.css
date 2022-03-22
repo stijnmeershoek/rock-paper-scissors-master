@@ -34,13 +34,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
   color: white;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 body > header {
-  width: 50%;
-  margin-top: 6vh;
+  width: clamp(500px, 50%, 100vw);
+  margin-top: 3vh;
   height: fit-content;
   display: flex;
   justify-content: space-between;
@@ -111,10 +112,12 @@ button {
   user-select: none;
 }
 
+.rules:hover, .rules:focus-visible {
+  border-color: white;
+}
+
 main {
-  width: 650px;
-  height: 650px;
-  min-height: 650px;
+  width: min(70vh, 650px);
   aspect-ratio: 1;
   position: relative;
   --padding: 15%;
@@ -130,10 +133,10 @@ main {
   cursor: pointer;
 }
 
-.rock:hover,
-.paper:hover,
-.scissors:hover {
-  filter: brightness(0.85);
+.rock:hover, .rock:focus-visible,
+.paper:hover, .paper:focus-visible,
+.scissors:hover, .scissors:focus-visible {
+  filter: brightness(0.75);
 }
 
 .paper {
@@ -247,7 +250,7 @@ main {
   cursor: pointer;
 }
 
-.rules-modal .close-btn:hover path {
+.rules-modal .close-btn:hover path, .rules-modal .close-btn:focus-visible path {
   opacity: 1;
 }
 
