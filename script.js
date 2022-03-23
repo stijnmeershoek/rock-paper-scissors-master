@@ -1,5 +1,59 @@
+const PREFIX = "RPS";
+
+const main = document.querySelector("main");
+const buttons = document.querySelectorAll("main > button");
+const templates = document.querySelectorAll("template");
+const playAgain = document.querySelector(".play-again");
+const lineContainer = document.querySelector(".lines-container");
+const scoreElem = document.querySelector("header .score > h1");
+let score = 0;
+let yourPick;
+
+// Startup functions
 //
-// Rules Modal
+// Get saved score if there is one
+// Add the svg connecting lines
+
+const localScore = localStorage.getItem(`${PREFIX}-SCORE`);
+if (localScore) {
+  score = localScore;
+  scoreElem.textContent = score;
+} else {
+  scoreElem.textContent = 0;
+}
+
+addLines();
+
+//
+// Listen for User click
+//
+
+buttons.forEach((el) => {
+  el.addEventListener("click", () => {
+    yourPick = el.dataset.value;
+    let housePick = document.querySelector(".house-pick");
+    let rest = document.querySelectorAll(`main > button:not(.${el.classList[0]})`);
+    let header = document.querySelectorAll(".pick-header");
+    rest.forEach((elem) => {
+      elem.classList.add("hide");
+    });
+    housePick.classList.remove("hide");
+    lineContainer.classList.add("hide");
+    header.forEach((el) => {
+      el.classList.remove("hide");
+    });
+    el.classList.add("your-pick");
+    main.classList.add("step");
+    setTimeout(() => {
+      pickRandom();
+    }, 1000);
+  });
+});
+
+playAgain.querySelector("button").addEventListener("click", restartGame);
+
+//
+// Open and close Rules Modal
 //
 
 const rulesBtn = document.querySelector(".rules");
@@ -13,24 +67,129 @@ function modalOpenClose() {
 }
 
 //
-// Lines in between the Rock, Paper and Scissors buttons.
+// Helper Functions needed for game
 //
 
+// Generate computer pick randomly and check if user won or lost
+function pickRandom() {
+  if (!yourPick) return;
+  const houseEmpty = document.querySelector(".house-pick");
+  const pick = Math.floor(Math.random() * templates.length);
+  const pickElem = templates[pick];
+  var clone = pickElem.content.cloneNode(true);
+  main.replaceChild(clone, houseEmpty);
+  score = Number(score);
+
+  switch (pick) {
+    case 0:
+      if (yourPick == 0) playAgainScreen("Tie");
+      if (yourPick == 2) {
+        playAgainScreen("You Win");
+        win();
+        score = score + 1;
+      }
+      if (yourPick == 1) {
+        playAgainScreen("You Lose");
+        lose();
+        score = score - 1;
+      }
+      break;
+    case 1:
+      if (yourPick == 1) playAgainScreen("Tie");
+
+      if (yourPick > 1) {
+        playAgainScreen("You Lose");
+        lose();
+        score = score - 1;
+      }
+      if (yourPick < 1) {
+        playAgainScreen("You Win");
+        win();
+        score = score + 1;
+      }
+      break;
+    case 2:
+      if (yourPick == 2) playAgainScreen("Tie");
+      if (yourPick == 1) {
+        playAgainScreen("You Win");
+        win();
+        score = score + 1;
+      }
+      if (yourPick == 0) {
+        playAgainScreen("You Lose");
+        lose();
+        score = score - 1;
+      }
+      break;
+  }
+
+  if (score < 0) {
+    score = 0;
+  }
+  localStorage.setItem(`${PREFIX}-SCORE`, score);
+  scoreElem.textContent = score;
+}
+
+// Show the play again btn and show win or loss
+function playAgainScreen(text) {
+  main.classList.add("restart");
+  playAgain.children[0].textContent = text;
+  playAgain.classList.remove("hide");
+}
+
+function lose() {
+  document.querySelector(".house-pick").classList.add("win-shadow");
+}
+
+function win() {
+  document.querySelector(".your-pick").classList.add("win-shadow");
+}
+
+// Reset the screen to start over
+function restartGame() {
+  yourPick = "";
+  let housePick = document.querySelector(".house-pick");
+  let YourPick = document.querySelector(".your-pick");
+  let rest = document.querySelectorAll(`main > button`);
+  let header = document.querySelectorAll(".pick-header");
+  rest.forEach((elem) => {
+    if (elem.classList.contains("your-pick")) {
+      elem.classList.remove("your-pick");
+    }
+    elem.classList.remove("hide");
+  });
+  housePick.innerHTML = "";
+  housePick.classList.remove("win-shadow");
+  YourPick.classList.remove("win-shadow");
+  housePick.classList.add("empty");
+  housePick.classList.add("hide");
+  playAgain.classList.add("hide");
+  lineContainer.classList.remove("hide");
+  header.forEach((el) => {
+    el.classList.add("hide");
+  });
+  main.classList.remove("step");
+  main.classList.remove("restart");
+}
+
+// Open and close rules modal
+function modalOpenClose() {
+  modal.classList.toggle("hide");
+}
+
+// add the connecting lines dynamically rather than static with svg
 function addLines() {
-  const main = document.querySelector("main");
   var vw = main.clientWidth;
   var vh = main.clientHeight;
-  const divs = document.querySelectorAll("main > button");
-  const lineContainer = document.querySelector(".lines-container");
 
   lineContainer.innerHTML = "";
 
-  divs.forEach((el, index) => {
+  buttons.forEach((el, index) => {
     let target;
-    if (index === divs.length - 1) {
-      target = divs[0];
+    if (index === buttons.length - 1) {
+      target = buttons[0];
     } else {
-      target = divs[index + 1];
+      target = buttons[index + 1];
     }
 
     let parentPos = main.getBoundingClientRect();
@@ -64,5 +223,3 @@ function addLines() {
     lineContainer.appendChild(svg);
   });
 }
-
-addLines();

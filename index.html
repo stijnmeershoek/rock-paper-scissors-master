@@ -27,33 +27,32 @@
     </div>
     <div class="score">
       <span>Score</span>
-      <h1>12</h1>
+      <h1></h1>
     </div>
   </header>
   <main>
     <div class="lines-container"></div>
-    <button class="paper">
+    <button class="paper" data-value="2">
       <div></div>
     </button>
-    <button class="scissors">
+    <button class="scissors" data-value="1">
       <div></div>
     </button>
-    <button class="rock">
+    <button class="rock" data-value="0">
       <div></div>
     </button>
+    <div class="play-again hide">
+      <h1></h1>
+      <button class="play-again-btn">Play again</button>
+    </div>
+    <div class="house-pick empty hide"></div>
   </main>
-  <button class="rules">Rules</button>
-  <div class="modal hide">
+  <footer> <button class="rules">Rules</button></footer>
+
+  <div class="modal">
     <div class="rules-modal">
       <header>
         <h3>Rules</h3>
-        <button class="close-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-            <path fill="#3B4262" fill-rule="evenodd"
-              d="M16.97 0l2.122 2.121-7.425 7.425 7.425 7.425-2.121 2.12-7.425-7.424-7.425 7.425L0 16.97l7.425-7.425L0 2.121 2.121 0l7.425 7.425L16.971 0z"
-              opacity=".25" />
-          </svg>
-        </button>
       </header>
       <div class="rules-modal-content">
         <svg xmlns="http://www.w3.org/2000/svg" width="304" height="270">
@@ -126,8 +125,31 @@
           </g>
         </svg>
       </div>
+      <button class="close-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+          <path fill="#3B4262" fill-rule="evenodd"
+            d="M16.97 0l2.122 2.121-7.425 7.425 7.425 7.425-2.121 2.12-7.425-7.424-7.425 7.425L0 16.97l7.425-7.425L0 2.121 2.121 0l7.425 7.425L16.971 0z"
+            opacity=".25" />
+        </svg>
+      </button>
     </div>
   </div>
+
+  <template id="rock">
+    <button class="rock house-pick">
+      <div></div>
+    </button>
+  </template>
+  <template id="scissors">
+    <button class="scissors house-pick">
+      <div></div>
+    </button>
+  </template>
+  <template id="paper">
+    <button class="paper house-pick">
+      <div></div>
+    </button>
+  </template>
 </body>
 
 </html>
