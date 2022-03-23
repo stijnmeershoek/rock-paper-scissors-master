@@ -152,14 +152,14 @@ main {
   --image: url(./images/icon-scissors.svg);
   --shadow: #c76c1b;
   top: var(--padding);
-  right: var(--padding);
+  left: calc(75% - var(--padding));
 }
 
 .rock {
   --background: var(--rock-gradient);
   --image: url(./images/icon-rock.svg);
   --shadow: #9e1635;
-  bottom: calc(var(--padding) + 5%);
+  top: calc(75% - (var(--padding) + 5%));
   left: 50%;
   transform: translateX(-50%);
 }
@@ -256,4 +256,16 @@ main {
 
 .hide {
   display: none;
+}
+
+.step-2 {
+  animation: step-2 500ms ease-in-out forwards;
+}
+
+@keyframes step-2 {
+  100% {
+    top: 50%;
+    left: var(--padding);
+    transform: translateY(-50%);
+  }
 }
